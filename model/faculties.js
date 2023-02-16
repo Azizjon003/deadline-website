@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const faculties = new moongose.Schema({
+const faculties = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: [3, "Faculty name must be at least 3 characters"],
     maxlength: [50, "Faculty name must be at most 50 characters"],
   },
 });

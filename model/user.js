@@ -64,7 +64,6 @@ const userSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     default: true,
-    select: false,
   },
   role: {
     type: String,
@@ -75,4 +74,14 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("Users", userSchema);
 
+User.aggregate([
+  {
+    $lookup: {
+      from: "faculties",
+      localField: "faculty_id",
+      foreignField: "_id",
+      as: "faculties",
+    },
+  },
+]);
 module.exports = User;
