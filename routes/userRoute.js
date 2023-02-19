@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { getAll, getOne } = require("../controller/UserController.js");
+const {
+  getAll,
+  getOne,
+  update,
+  deleteOne,
+} = require("../controller/UserController.js");
 router.route("/").get(getAll);
-router.route("/:id").get(getOne);
+router.route("/:id").get(getOne).patch(update).delete(deleteOne);
 
 module.exports = router;

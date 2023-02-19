@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
+const fs = require("fs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -15,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   balance: {
     type: Number,
-    required: true,
+    default: 0,
   },
   cource: {
     type: String,
@@ -72,6 +74,26 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.pre("updateOne", async function (next) {
+  console.log("Update");
+  console.log(this._update);
+  if (!this._update?.password) return next();
+  const hashPass = await bcrypt.hash(this._update.password, 12);
+  this._update.password = hashPass;
+  this._update.passwordConfirm = undefined;
+  this._update.passwordChangedAt = Date.now();
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  const hashPass = await bcrypt.hash(this.password, 12);
+  this.password = hashPass;
+  this.passwordConfirm = undefined;
+});
+userSchema.methods.correctPassword = async function (password, hashPass) {
+  return await bcrypt.compare(password, hashPass);
+};
 const User = mongoose.model("Users", userSchema);
 
 User.aggregate([
