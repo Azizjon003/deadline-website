@@ -3,6 +3,15 @@ const AppError = require("../utility/appError");
 const catchAsync = require("../utility/catchUser");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const OptionSort = function (options, permission) {
+  const option = {};
+  console.log(permission);
+  Object.keys(options).forEach((key) => {
+    if (permission.includes(key)) option[key] = options[key];
+  });
+
+  return option;
+};
 const signUp = catchAsync(async (req, res, next) => {
   const {
     name,
@@ -124,10 +133,90 @@ const protect = catchAsync(async (req, res, next) => {
   res.locals.user = user;
   next();
 });
+const updateMe = catchUser(async (req, res, next) => {
+  const id = req.user._id;
+  const optionPermission = ["name", "lastname"];
+  let option = {};
+  option.name = req.body.name || req.user.name;
+  option.lastname = req.body.lastname || req.user.lastname;
 
+  const options = OptionSort(option, optionPermission);
+
+  const user = await User.updateOne({ _id: id }, options, {
+    new: true,
+    runValidators: true,
+  });
+
+  responseFunc(res, user, 200);
+});
+
+const deleteUser = catchUser(async (req, res, next) => {
+  console.log(req.user);
+  const deleteData = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      active: false,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  responseFunc(res, null, 204);
+});
+const role = (roles) => {
+  return catchUser(async (req, res, next) => {
+    if (!roles.include(req.user.role)) {
+      return next(new AppError("Siz bu huquqga ega emassiz", 401));
+    }
+    next();
+  });
+};
+
+const isSignin = catchUser(async (req, res, next) => {
+  let token;
+  console.log(req.cookies);
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+  if (!req.cookies.jwt || req.cookies.jwt == "logout") {
+    return next();
+  }
+
+  // tokenni tekshirish kerak
+  const id = await promisify(jwt.verify)(token, process.env.SECRET);
+  if (!id) {
+    console.log("sana");
+    return next();
+  }
+  // user bazada bor yo'qligini tekshirib olish
+
+  const user = await User.findById(id.id);
+
+  if (!user) {
+    return next();
+  }
+  res.locals.user = user;
+  return next();
+});
+const logout = (req, res, next) => {
+  console.log("logotga kirdi");
+  res.cookie("jwt", "logout", {
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: "success",
+  });
+};
 module.exports = {
   signUp,
   login,
   updatePassword,
   protect,
+  isSignin,
+  logout,
+  role,
+  updateme,
+  deleteUser,
 };

@@ -3,7 +3,8 @@ const User = require("../model/user");
 const app = express();
 const errorHandler = require("../controller/errorHandler");
 const AppError = require("../utility/appError");
-
+const cookie = require("cookie-parser");
+app.use(cookie());
 app.use(express.json());
 app.use("/api/v1/users", require("../routes/userRoute"));
 app.use("/api/v1/auth", require("../routes/authRoute"));
