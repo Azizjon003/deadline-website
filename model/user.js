@@ -97,14 +97,4 @@ userSchema.methods.correctPassword = async function (password, hashPass) {
 };
 const User = mongoose.model("Users", userSchema);
 
-User.aggregate([
-  {
-    $lookup: {
-      from: "faculties",
-      localField: "faculty_id",
-      foreignField: "_id",
-      as: "faculties",
-    },
-  },
-]);
 module.exports = User;
