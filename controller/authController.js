@@ -133,7 +133,7 @@ const protect = catchAsync(async (req, res, next) => {
   res.locals.user = user;
   next();
 });
-const updateMe = catchUser(async (req, res, next) => {
+const updateMe = catchAsync(async (req, res, next) => {
   const id = req.user._id;
   const optionPermission = ["name", "lastname"];
   let option = {};
@@ -142,15 +142,19 @@ const updateMe = catchUser(async (req, res, next) => {
 
   const options = OptionSort(option, optionPermission);
 
+  console.log(options);
   const user = await User.updateOne({ _id: id }, options, {
     new: true,
     runValidators: true,
   });
-
-  responseFunc(res, user, 200);
+  const userData = await User.findById(id);
+  res.status(200).json({
+    status: "success",
+    data: userData,
+  });
 });
 
-const deleteUser = catchUser(async (req, res, next) => {
+const deleteUser = catchAsync(async (req, res, next) => {
   console.log(req.user);
   const deleteData = await User.findByIdAndUpdate(
     req.user._id,
@@ -163,7 +167,9 @@ const deleteUser = catchUser(async (req, res, next) => {
     }
   );
 
-  responseFunc(res, null, 204);
+  res.status(200).json({
+    status: "success",
+  });
 });
 const role = (roles) => {
   return catchUser(async (req, res, next) => {
@@ -174,7 +180,7 @@ const role = (roles) => {
   });
 };
 
-const isSignin = catchUser(async (req, res, next) => {
+const isSignin = catchAsync(async (req, res, next) => {
   let token;
   console.log(req.cookies);
   if (req.cookies.jwt) {
@@ -207,6 +213,7 @@ const logout = (req, res, next) => {
   });
   res.status(200).json({
     status: "success",
+    token: "logout",
   });
 };
 module.exports = {
@@ -217,6 +224,6 @@ module.exports = {
   isSignin,
   logout,
   role,
-  updateme,
+  updateMe,
   deleteUser,
 };
