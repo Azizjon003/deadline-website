@@ -12,8 +12,9 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   faculty_id: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Faculties",
   },
   balance: {
     type: Number,

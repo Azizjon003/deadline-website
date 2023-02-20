@@ -9,15 +9,20 @@ const deadlineSchema = new mongoose.Schema({
     required: true,
   },
   science: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Sciences",
   },
   file: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Files",
   },
   active: {
     type: Boolean,
     required: true,
   },
 });
+
+const Deadline = mongoose.model("Deadline", deadlineSchema);
+module.exports = Deadline;
