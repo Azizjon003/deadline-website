@@ -1,3 +1,3 @@
 # deadline-website
 
-<p>Assalomu alaykum hammaga bu loyiha opensource bo'lib 27.02.2023 gacha ishga tushurmoqchimiz.Jamoa @tuit_team</p>
+<p>Hello everyone, this project is open source and we want to launch it by 27.02.2023. Team @tuit_team. Now the admin part is being prepared and other work is being done.</p>
