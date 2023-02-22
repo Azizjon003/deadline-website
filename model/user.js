@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -64,10 +65,12 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   hashToken: String,
   expiresDate: Date,
+
   active: {
     type: Boolean,
     default: true,
   },
+
   role: {
     type: String,
     enum: ["admin", "user", "my-friend"],
@@ -76,8 +79,6 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("updateOne", async function (next) {
-  console.log("Update");
-  console.log(this._update);
   if (!this._update?.password) return next();
   const hashPass = await bcrypt.hash(this._update.password, 12);
   this._update.password = hashPass;
