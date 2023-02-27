@@ -9,6 +9,7 @@ app.use(express.json());
 app.use("/api/v1/users", require("../routes/userRoute"));
 app.use("/api/v1/auth", require("../routes/authRoute"));
 app.use("/api/v1/upload", require("../routes/uploadRoute"));
+app.use("/api/v1/deadline", require("../routes/deadlineRoute"));
 app.all("*", (req, res, next) => {
   next(new AppError("Not found", 404));
 });

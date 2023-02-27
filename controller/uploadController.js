@@ -15,8 +15,9 @@ const upload = async (req, res, next) => {
     const name = req.file.filename;
     const path = req.file.path;
     const size = req.file.size;
+    let files;
     try {
-      const files = await File.create({
+      files = await File.create({
         name,
         path,
         size,
@@ -27,9 +28,9 @@ const upload = async (req, res, next) => {
     } catch (err) {
       next(new AppError(err.message, 500));
     }
-    res.status(200).send({
-      message: "Uploaded the file successfully: " + req.file.originalname,
-      obj: req.file.path,
+    res.status(200).json({
+      status: "success",
+      data: files._id,
     });
   } catch (err) {
     next(new AppError(err.message, 500));

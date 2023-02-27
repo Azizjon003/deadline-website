@@ -4,8 +4,9 @@ const deadlineSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  from: {
+  course: {
     type: String,
+    enum: ["1", "2", "3", "4"],
     required: true,
   },
   science: {
@@ -20,6 +21,7 @@ const deadlineSchema = new mongoose.Schema({
   },
   active: {
     type: Boolean,
+    default: false,
     required: true,
   },
 });
