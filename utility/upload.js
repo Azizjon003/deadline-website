@@ -18,6 +18,17 @@ let storage = multer.diskStorage({
 let uploadFile = multer({
   storage: storage,
   limits: { fileSize: maxSize },
+  fileFilter: function (req, file, cb) {
+    const filetypes = /pdf|doc|docx|zip|rar/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    if (mimetype && extname) {
+      return cb(null, true);
+    }
+    cb(new Error("Fayl turi noto‘g‘ri!"));
+  },
 });
 
 let uploadFileMiddleware = util.promisify(uploadFile.single("file"));

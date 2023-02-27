@@ -13,6 +13,12 @@ const fileSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
+  createdWho: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 const File = mongoose.model("File", fileSchema);
