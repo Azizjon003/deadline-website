@@ -1,6 +1,7 @@
 const AppError = require("../utility/appError");
 const catchAsync = require("../utility/catchUser");
 const Deadline = require("../model/deadline");
+const File = require("../model/files");
 
 const getAll = catchAsync(async (req, res, next) => {
   const deadline = await Deadline.find({
@@ -19,16 +20,7 @@ const getOne = catchAsync(async (req, res, next) => {
   console.log(id);
   const deadline = await Deadline.find({
     _id: id,
-  })
-    .populate({
-      path: "file",
-      select: "name size createdWho",
-    })
-    .populate({
-      path: "fan",
-      select: "name",
-    });
-
+  });
   res.status(200).json({
     status: "success",
     data: deadline,
@@ -72,9 +64,26 @@ const update = catchAsync(async (req, res, next) => {
   });
 });
 
+const myUploadDeadlines = catchAsync(async (req, res, next) => {
+  const id = req.user._id;
+  const files = await File.find({
+    createdWho: id,
+  }).select("_id");
+  console.log(files);
+
+  const deadlines = await Deadline.find({
+    file: { $in: files },
+  }).select("name course fan");
+
+  res.status(200).json({
+    status: "success",
+    data: deadlines,
+  });
+});
 module.exports = {
   getAll,
   getOne,
   create,
   update,
+  myUploadDeadlines,
 };

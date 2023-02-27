@@ -33,6 +33,14 @@ const deadlineSchema = new mongoose.Schema(
   }
 );
 
+deadlineSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "fan",
+    select: "name",
+  });
+  next();
+});
+
 deadlineSchema.pre("save", async function (next) {
   console.log("Will save document...");
   console.log(this);

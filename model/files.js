@@ -26,6 +26,7 @@ const fileSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 fileSchema.pre("save", async function (next) {
   console.log("Will save document...");
   console.log(this);
