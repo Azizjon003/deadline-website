@@ -19,7 +19,20 @@ const getOne = catchAsync(async (req, res, next) => {
   console.log(id);
   const deadline = await Deadline.find({
     _id: id,
-  }).populate("science");
+  })
+    .populate({
+      path: "file",
+      select: "name size createdWho",
+    })
+    .populate({
+      path: "fan",
+      select: "name",
+    });
+
+  res.status(200).json({
+    status: "success",
+    data: deadline,
+  });
 });
 
 const create = catchAsync(async (req, res, next) => {
@@ -64,4 +77,4 @@ module.exports = {
   getOne,
   create,
   update,
-}
+};
