@@ -262,7 +262,50 @@ const adminDeadlinedownload = catchAsync(async (req, res, next) => {
 
   res.download(deadline.file.path);
 });
-const deadlineConfirm = catchAsync(async (req, res, next) => {});
+const deadlineConfirm = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const confirm = req.body.confirm;
+  if (confirm != true) {
+    return next(new AppError("Deadline tasdiqlanmadi", 404));
+  }
+  const deadline = await Deadline.findOne({
+    _id: id,
+    active: false,
+  }).populate({
+    path: "file",
+    select: "createdWho",
+  });
+
+  if (!deadline) {
+    return next(new AppError("deadline topilmadi", 404));
+  }
+  const user = await User.findOne({
+    _id: deadline.file.createdWho,
+  });
+
+  const userUpdate = await User.updateOne(
+    {
+      _id: deadline.file.createdWho,
+    },
+    {
+      balance: user.balance + 1,
+    }
+  );
+
+  const deadlineUpdate = await Deadline.updateOne(
+    {
+      _id: id,
+    },
+    {
+      active: true,
+    }
+  );
+
+  res.status(200).json({
+    status: "success",
+    message: "Deadline tasdiqlandi",
+  });
+});
 
 module.exports = {
   signUp,
@@ -277,4 +320,5 @@ module.exports = {
   cashCheck,
   deadlinecheck,
   adminDeadlinedownload,
+  deadlineConfirm,
 };
