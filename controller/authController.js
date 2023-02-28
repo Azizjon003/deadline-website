@@ -3,6 +3,7 @@ const AppError = require("../utility/appError");
 const catchAsync = require("../utility/catchUser");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const Deadline = require("../model/deadline");
 const OptionSort = function (options, permission) {
   const option = {};
   console.log(permission);
@@ -172,8 +173,10 @@ const deleteUser = catchAsync(async (req, res, next) => {
   });
 });
 const role = (roles) => {
-  return catchUser(async (req, res, next) => {
-    if (!roles.include(req.user.role)) {
+  return catchAsync(async (req, res, next) => {
+    console.log(req.user);
+    console.log(roles.includes("admin"));
+    if (!roles.includes(req.user.role)) {
       return next(new AppError("Siz bu huquqga ega emassiz", 401));
     }
     next();
@@ -227,8 +230,39 @@ const cashCheck = catchAsync(async (req, res, next) => {
   if (user.balance <= 0) {
     return next(new AppError("Sizda mablag' yetarli emas", 401));
   }
+  req.user.balance = user.balance;
   return next();
 });
+const deadlinecheck = catchAsync(async (req, res, next) => {
+  const id = req.user.id;
+  const user = await User.findOne({
+    _id: id,
+  });
+  const data = await Deadline.find({
+    active: false,
+  }).populate({
+    path: "file",
+    select: "id",
+  });
+
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
+const adminDeadlinedownload = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const id = req.params.id;
+
+  const deadline = await Deadline.findOne({
+    _id: id,
+  }).populate({
+    path: "file",
+  });
+
+  res.download(deadline.file.path);
+});
+
 module.exports = {
   signUp,
   login,
@@ -240,4 +274,6 @@ module.exports = {
   updateMe,
   deleteUser,
   cashCheck,
+  deadlinecheck,
+  adminDeadlinedownload,
 };
