@@ -216,6 +216,19 @@ const logout = (req, res, next) => {
     token: "logout",
   });
 };
+
+const cashCheck = catchAsync(async (req, res, next) => {
+  const id = req.user.id;
+
+  const user = await User.findOne({
+    _id: id,
+  });
+
+  if (user.balance <= 0) {
+    return next(new AppError("Sizda mablag' yetarli emas", 401));
+  }
+  return next();
+});
 module.exports = {
   signUp,
   login,
@@ -226,4 +239,5 @@ module.exports = {
   role,
   updateMe,
   deleteUser,
+  cashCheck,
 };
