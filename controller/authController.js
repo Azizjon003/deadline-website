@@ -262,6 +262,7 @@ const adminDeadlinedownload = catchAsync(async (req, res, next) => {
 
   res.download(deadline.file.path);
 });
+const deadlineConfirm = catchAsync(async (req, res, next) => {});
 
 module.exports = {
   signUp,

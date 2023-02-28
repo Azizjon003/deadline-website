@@ -9,10 +9,10 @@ const cookie = require("cookie-parser");
 app.use(cors("*"));
 app.use(cookie());
 app.use(express.json());
-app.use(
-  // auth.protect,
-  express.static(path.join(__dirname, "../public/uploads"))
-);
+// app.use(
+//   // auth.protect,
+//   express.static(path.join(__dirname, "../public/uploads"))
+// );
 
 app.use("/api/v1/users", require("../routes/userRoute"));
 app.use("/api/v1/auth", require("../routes/authRoute"));
