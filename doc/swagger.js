@@ -10,6 +10,12 @@ const swaggerOptions = {
         email: "azizjonaliqulov68@gmail.com",
       },
     },
+    tags: [
+      {
+        name: "Users",
+        description: "API for users",
+      },
+    ],
     servers: [
       {
         url: "http://localhost:8080",
