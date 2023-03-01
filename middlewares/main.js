@@ -6,6 +6,8 @@ const app = express();
 const errorHandler = require("../controller/errorHandler");
 const AppError = require("../utility/appError");
 const cookie = require("cookie-parser");
+const swaggerUi = require("swagger-ui-express");
+
 app.use(cors("*"));
 app.use(cookie());
 app.use(express.json());
@@ -20,6 +22,11 @@ app.use("/api/v1/upload", require("../routes/uploadRoute"));
 app.use("/api/v1/deadline", require("../routes/deadlineRoute"));
 app.use("/api/v1/download", require("../routes/downloadRoute"));
 app.use("/api/v1/deadlinecheck", require("../routes/deadlinecheck"));
+app.use(
+  "/api-doc",
+  swaggerUi.serve,
+  swaggerUi.setup(require("../doc/swagger"))
+);
 app.all("*", (req, res, next) => {
   next(new AppError("Not found", 404));
 });
