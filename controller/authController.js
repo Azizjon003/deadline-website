@@ -14,6 +14,7 @@ const OptionSort = function (options, permission) {
   return option;
 };
 const signUp = catchAsync(async (req, res, next) => {
+  //sirtqi qo'shish kk
   const {
     name,
     lastname,

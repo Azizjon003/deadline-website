@@ -6,7 +6,7 @@ const File = require("../model/files");
 const getAll = catchAsync(async (req, res, next) => {
   const deadline = await Deadline.find({
     active: true,
-  });
+  }).select("-file -active");
   res.status(200).json({
     status: "success",
     data: {

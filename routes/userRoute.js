@@ -7,7 +7,7 @@ const {
   deleteOne,
 } = require("../controller/UserController.js");
 const auth = require("../controller/authController");
-router.route("/").get(auth.protect, auth.role(["admin"]), getAll);
+router.route("/").get(getAll);
 router
   .route("/:id")
   .get(auth.protect, auth.role(["admin"]), getOne)
