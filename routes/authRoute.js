@@ -21,35 +21,126 @@ router.route("/mydeadline").get(protect, deadline.myUploadDeadlines);
 module.exports = router;
 /**
  * @swagger
+ * tags:
+ *  name: Auth
+ *  description: The user books managing API
+ * /api/v1/auth/signup:
+ *  post:
+ *   summary: Create a new user
+ *   responses:
+ *    200:
+ *     description: The user was successfully created
+ *     content:
+ *      application/json:
+ *       schema:
+ *        items:
+ *         $ref: '#/components/schemas/User'
+ *    500:
+ *     description: Some server error
+ * /api/v1/auth/login:
+ *  post:
+ *   summary: login user and get token
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       type: object
+ *       properties:
+ *        email:
+ *         type: string
+ *         description: The email of the user
+ *        password:
+ *         type: string
+ *         description: The password of the user
+ *
+ *   responses:
+ *    200:
+ *     description: The user was successfully loggin in
+ *     content:
+ *      application/json:
+ *       schema:
+ *        properties:
+ *         token:
+ *          type: string
+ *          description: The token of the user
+ *         status:
+ *          type: string
+ *          description: the status
+ *    500:
+ *     description: Some server error
+ * /api/v1/auth/updatepassword:
+ *  post:
+ *    summary: update password
+ *    requestBody:
+ *      required: true
+ *      content:
+ *       application/json:
+ *        schema:
+ *         type: object
+ *         properties:
+ *           password:
+ *            type: string
+ *            description: The password of the user
+ *           passwordConfirm:
+ *            type: string
+ *            description: The passwordConfirm of the user
+ *           passwordCurrent:
+ *            type: string
+ *            description: The passwordCurrent of the user
+ *    responses:
+ *    200:
+ *     description: The user was successfully updated password
+ *     content:
+ *      application/json:
+ *       schema:
+ *        items:
+ *        $ref: '#/components/schemas/User'
+ *    500:
+ *     description: Some server error
+ *
+ */
+
+/**
+ * @swagger
  * components:
  *   schemas:
- *     Book:
+ *     User:
  *       type: object
  *       required:
- *         - title
- *         - author
- *         - finished
+ *        - name
+ *        - lastname
+ *        - faculty_id
+ *        - cource
+ *        - email
+ *        - password
+ *        - passwordConfirm
  *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the book
- *         title:
- *           type: string
- *           description: The title of your book
- *         author:
- *           type: string
- *           description: The book author
- *         finished:
- *           type: boolean
- *           description: Whether you have finished reading the book
- *         createdAt:
- *           type: string
- *           format: date
- *           description: The date the book was added
- *       example:
- *         id: d5fE_asz
- *         title: The New Turing Omnibus
- *         author: Alexander K. Dewdney
- *         finished: false
- *         createdAt: 2020-03-10T04:05:06.157Z
+ *        id:
+ *          type: string
+ *          description: The auto-generated id of the user
+ *        name:
+ *         type: string
+ *         description: The name of the user
+ *        lastname:
+ *         type: string
+ *         description: The lastname of the user
+ *        faculty_id:
+ *         type: string
+ *         faculty_id: The faculty_id of the user
+ *        balance:
+ *         type: number
+ *         description: The balance of the user
+ *        cource:
+ *          type: string
+ *          description: The cource of the user
+ *        email:
+ *          type: string
+ *          description: The email of the user
+ *        password:
+ *          type: string
+ *          description: The password of the user
+ *        passwordConfirm:
+ *          type: string
+ *          description: The passwordConfirm of the user
  */
