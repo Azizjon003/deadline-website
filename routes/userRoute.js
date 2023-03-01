@@ -6,7 +6,12 @@ const {
   update,
   deleteOne,
 } = require("../controller/UserController.js");
-router.route("/").get(getAll);
-router.route("/:id").get(getOne).patch(update).delete(deleteOne);
+const auth = require("../controller/authController");
+router.route("/").get(auth.protect, auth.role(["admin"]), getAll);
+router
+  .route("/:id")
+  .get(auth.protect, auth.role(["admin"]), getOne)
+  .patch(auth.protect, auth.role(["admin"]), update)
+  .delete(auth.protect, auth.role(["admin"]), deleteOne);
 
 module.exports = router;

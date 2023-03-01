@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const deadline = require("../controller/deadline");
-
-router.route("/").get(deadline.getAll).post(deadline.create);
-router.route("/:id").get(deadline.getOne).patch(deadline.update);
+const auth = require("../controller/authController");
+router
+  .route("/")
+  .get(auth.protect, deadline.getAll)
+  .post(auth.protect, deadline.create);
+router
+  .route("/:id")
+  .get(auth.protect, deadline.getOne)
+  .patch(auth.protect, deadline.update);
 
 module.exports = router;
