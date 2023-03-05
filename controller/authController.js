@@ -312,6 +312,19 @@ const deadlineConfirm = catchAsync(async (req, res, next) => {
     message: "Deadline tasdiqlandi",
   });
 });
+const me = catchAsync(async (req, res, next) => {
+  const user = {
+    name: req.user.name,
+    lastname: req.user.lastname,
+    balance: req.user.balance,
+    cource: req.user.cource,
+    email: req.user.email,
+    role: req.user.role,
+  };
+  res.status(200).json({
+    user,
+  });
+});
 
 module.exports = {
   signUp,
@@ -327,4 +340,5 @@ module.exports = {
   deadlinecheck,
   adminDeadlinedownload,
   deadlineConfirm,
+  me,
 };

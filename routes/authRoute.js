@@ -8,10 +8,12 @@ const {
   updateMe,
   deleteUser,
   logout,
+  me,
 } = require("../controller/authController.js");
 
 const deadline = require("../controller/deadline");
 router.route("/signup").post(signUp);
+router.route("/me").get(protect, me);
 router.route("/login").post(login);
 router.route("/updatepassword").post(protect, updatePassword);
 router.route("/updateme").post(protect, updateMe);
