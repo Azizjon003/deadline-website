@@ -86,7 +86,7 @@ const getCourse = catchAsync(async (req, res, next) => {
   const course = req.params.course;
   console.log(course);
   const data = await Deadline.find({
-    course: course + "",
+    course: course,
   }).select("_id name cource updatedAt");
 
   res.status(200).json({
