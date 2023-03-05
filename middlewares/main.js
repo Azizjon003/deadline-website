@@ -16,6 +16,7 @@ app.use(express.json());
 //   express.static(path.join(__dirname, "../public/uploads"))
 // );
 
+app.use("/api/v1/faculties", require("../routes/facultyRoute"));
 app.use("/api/v1/searching", require("../routes/searchingRoute"));
 app.use("/api/v1/users", require("../routes/userRoute"));
 app.use("/api/v1/auth", require("../routes/authRoute"));
