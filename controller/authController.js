@@ -45,6 +45,7 @@ const signUp = catchAsync(async (req, res, next) => {
   });
 });
 const login = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const { email, password } = req.body;
   if (!email || !password) {
     return next(new AppError("Please provide email and password", 400));

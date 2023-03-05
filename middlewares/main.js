@@ -7,8 +7,12 @@ const errorHandler = require("../controller/errorHandler");
 const AppError = require("../utility/appError");
 const cookie = require("cookie-parser");
 const swaggerUi = require("swagger-ui-express");
-
-app.use(cors("*"));
+const options = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
+app.use(cors(options));
 app.use(cookie());
 app.use(express.json());
 // app.use(
@@ -16,6 +20,7 @@ app.use(express.json());
 //   express.static(path.join(__dirname, "../public/uploads"))
 // );
 
+app.use("/api/v1/sciences", require("../routes/sciense"));
 app.use("/api/v1/faculties", require("../routes/facultyRoute"));
 app.use("/api/v1/searching", require("../routes/searchingRoute"));
 app.use("/api/v1/users", require("../routes/userRoute"));

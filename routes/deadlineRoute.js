@@ -8,4 +8,5 @@ router
   .get(auth.protect, deadline.getOne)
   .patch(auth.protect, deadline.update);
 
+router.route("/course/:course").get(deadline.getCourse);
 module.exports = router;

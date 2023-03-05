@@ -7,6 +7,7 @@ const getAll = catchAsync(async (req, res, next) => {
   const deadline = await Deadline.find({
     active: true,
   }).select("-file -active");
+
   res.status(200).json({
     status: "success",
     data: {
@@ -80,10 +81,24 @@ const myUploadDeadlines = catchAsync(async (req, res, next) => {
     data: deadlines,
   });
 });
+
+const getCourse = catchAsync(async (req, res, next) => {
+  const course = req.params.course;
+  console.log(course);
+  const data = await Deadline.find({
+    course: course + "",
+  });
+
+  res.status(200).json({
+    status: "succes",
+    data,
+  });
+});
 module.exports = {
   getAll,
   getOne,
   create,
   update,
   myUploadDeadlines,
+  getCourse,
 };
