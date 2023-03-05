@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../controller/authController");
 const path = require("path");
 const cors = require("cors");
+const morgan = require("morgan");
 const app = express();
 const errorHandler = require("../controller/errorHandler");
 const AppError = require("../utility/appError");
@@ -12,6 +13,7 @@ const options = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
 };
+app.use(morgan("dev"));
 app.use(cors(options));
 app.use(cookie());
 app.use(express.json());

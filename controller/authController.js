@@ -15,6 +15,7 @@ const OptionSort = function (options, permission) {
 };
 const signUp = catchAsync(async (req, res, next) => {
   //sirtqi qo'shish kk
+  // console.log(req.body);
   const {
     name,
     lastname,
@@ -24,7 +25,7 @@ const signUp = catchAsync(async (req, res, next) => {
     password,
     passwordConfirm,
   } = req.body;
-
+  console.log(password);
   const user = await User.create({
     name,
     lastname,
@@ -34,6 +35,8 @@ const signUp = catchAsync(async (req, res, next) => {
     password,
     passwordConfirm,
   });
+
+  console.log(user);
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -70,6 +73,7 @@ const login = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     token,
+    role: user.role,
   });
 });
 const updatePassword = catchAsync(async (req, res, next) => {
