@@ -19,9 +19,10 @@ const getAll = catchAsync(async (req, res, next) => {
 const getOne = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   console.log(id);
-  const deadline = await Deadline.find({
+  let deadline = await Deadline.find({
     _id: id,
   });
+ 
   res.status(200).json({
     status: "success",
     data: deadline,
@@ -89,6 +90,7 @@ const getCourse = catchAsync(async (req, res, next) => {
     course: course,
   }).select("_id name cource updatedAt");
 
+  
   res.status(200).json({
     status: "succes",
     data,
