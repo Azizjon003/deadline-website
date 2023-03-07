@@ -119,6 +119,8 @@ const protect = catchAsync(async (req, res, next) => {
     }
   }
 
+  console.log(req.headers.authorization);
+
   console.log(token);
   // tokenni tekshirish kerak
   const id = await promisify(jwt.verify)(token, process.env.JWT_SECRET);

@@ -18,7 +18,7 @@ router.route("/login").post(login);
 router.route("/updatepassword").post(protect, updatePassword);
 router.route("/updateme").post(protect, updateMe);
 router.route("/deleteuser").post(protect, deleteUser);
-router.route("/logout").get(protect, logout);
+router.route("/logout").get(logout);
 router.route("/mydeadline").get(protect, deadline.myUploadDeadlines);
 module.exports = router;
 /**

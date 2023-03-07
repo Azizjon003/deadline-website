@@ -22,7 +22,7 @@ const getOne = catchAsync(async (req, res, next) => {
   let deadline = await Deadline.find({
     _id: id,
   });
- 
+
   res.status(200).json({
     status: "success",
     data: deadline,
@@ -30,6 +30,7 @@ const getOne = catchAsync(async (req, res, next) => {
 });
 
 const create = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const deadline = await Deadline.create(req.body);
   res.status(200).json({
     status: "success",
@@ -90,7 +91,6 @@ const getCourse = catchAsync(async (req, res, next) => {
     course: course,
   }).select("_id name cource updatedAt");
 
-  
   res.status(200).json({
     status: "succes",
     data,
