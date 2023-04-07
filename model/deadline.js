@@ -28,6 +28,11 @@ const deadlineSchema = new mongoose.Schema(
       default: false,
       required: true,
     },
+    variant: {
+      type: Number,
+      required: true,
+      deafult: 1,
+    },
   },
   {
     timestamps: true,

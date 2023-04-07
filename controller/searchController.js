@@ -6,7 +6,8 @@ const searching = catchAsync(async (req, res, next) => {
   console.log(req.query.name);
   const deadline = await Deadline.find({
     active: true,
-    name: { $regex: query.name },
+
+    name: { $regex: query.name.toLowerCase() },
   }).select("-file -active");
 
   res.status(200).json({

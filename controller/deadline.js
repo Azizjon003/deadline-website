@@ -21,7 +21,7 @@ const getOne = catchAsync(async (req, res, next) => {
   console.log(id);
   let deadline = await Deadline.find({
     _id: id,
-  });
+  }).select("-file -active");
 
   res.status(200).json({
     status: "success",
@@ -31,6 +31,7 @@ const getOne = catchAsync(async (req, res, next) => {
 
 const create = catchAsync(async (req, res, next) => {
   console.log(req.body);
+  req.body.name = req.body.name.toLowerCase();
   const deadline = await Deadline.create(req.body);
   res.status(200).json({
     status: "success",
